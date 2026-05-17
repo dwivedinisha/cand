@@ -16,16 +16,10 @@
 // app.use('/api/match',      require('./routes/match'));
 // app.use('/api/ai',         require('./routes/ai'));
 
-// const path = require("path");
-// // Serve frontend build files
-// app.use(express.static(path.join(__dirname, "../frontend/dist")));
-// // React Router fix
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
-// });
 
 // app.listen(process.env.PORT || 5000, () =>
 //   console.log(`Server running on port ${process.env.PORT}`));
+
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -37,7 +31,13 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://cand-1.onrender.com',
+    'http://localhost:5173'
+  ]
+}));
+
 app.use(express.json());
 
 // MongoDB Connection
@@ -50,10 +50,10 @@ app.use('/api/candidates', require('./routes/candidates'));
 app.use('/api/match', require('./routes/match'));
 app.use('/api/ai', require('./routes/ai'));
 
-// Serve Frontend
+// Serve Frontend Build
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-// React Router Fix
+// React Router Refresh Fix
 app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
